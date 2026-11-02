@@ -43,49 +43,53 @@ entity design_1_wrapper is
     mclk : out STD_LOGIC;
     sdata : out STD_LOGIC;
     sw : in std_logic_vector(3 downto 0); 
-    leds : out std_logic_vector(3 downto 0)
+    leds : out std_logic_vector(3 downto 0);
+    led5 : out std_logic_vector(2 downto 0); -- RGB LED5
+    led6 : out std_logic_vector(2 downto 0) -- RGB LED6
   );
 end design_1_wrapper;
 
 architecture STRUCTURE of design_1_wrapper is
- component design_1 is
-  port (
-    DDR_cas_n : inout STD_LOGIC;
-    DDR_cke : inout STD_LOGIC;
-    DDR_ck_n : inout STD_LOGIC;
-    DDR_ck_p : inout STD_LOGIC;
-    DDR_cs_n : inout STD_LOGIC;
-    DDR_reset_n : inout STD_LOGIC;
-    DDR_odt : inout STD_LOGIC;
-    DDR_ras_n : inout STD_LOGIC;
-    DDR_we_n : inout STD_LOGIC;
-    DDR_ba : inout STD_LOGIC_VECTOR ( 2 downto 0 );
-    DDR_addr : inout STD_LOGIC_VECTOR ( 14 downto 0 );
-    DDR_dm : inout STD_LOGIC_VECTOR ( 3 downto 0 );
-    DDR_dq : inout STD_LOGIC_VECTOR ( 31 downto 0 );
-    DDR_dqs_n : inout STD_LOGIC_VECTOR ( 3 downto 0 );
-    DDR_dqs_p : inout STD_LOGIC_VECTOR ( 3 downto 0 );
-    FIXED_IO_mio : inout STD_LOGIC_VECTOR ( 53 downto 0 );
-    FIXED_IO_ddr_vrn : inout STD_LOGIC;
-    FIXED_IO_ddr_vrp : inout STD_LOGIC;
-    FIXED_IO_ps_srstb : inout STD_LOGIC;
-    FIXED_IO_ps_clk : inout STD_LOGIC;
-    FIXED_IO_ps_porb : inout STD_LOGIC;
-    IIC_0_scl_i : in STD_LOGIC;
-    IIC_0_scl_o : out STD_LOGIC;
-    IIC_0_scl_t : out STD_LOGIC;
-    IIC_0_sda_i : in STD_LOGIC;
-    IIC_0_sda_o : out STD_LOGIC;
-    IIC_0_sda_t : out STD_LOGIC;
-    bclk : out STD_LOGIC;
-    clk125 : in STD_LOGIC;
-    lrck : out STD_LOGIC;
-    mclk : out STD_LOGIC;
-    sdata : out STD_LOGIC;
-    leds_gpio_tri_o : out STD_LOGIC_VECTOR ( 3 downto 0 );
-    dips_gpio_tri_i : in STD_LOGIC_VECTOR ( 3 downto 0 )
-  );
-  end component design_1;
+    COMPONENT design_1
+      PORT (
+        DDR_cas_n : INOUT STD_LOGIC;
+        DDR_cke : INOUT STD_LOGIC;
+        DDR_ck_n : INOUT STD_LOGIC;
+        DDR_ck_p : INOUT STD_LOGIC;
+        DDR_cs_n : INOUT STD_LOGIC;
+        DDR_reset_n : INOUT STD_LOGIC;
+        DDR_odt : INOUT STD_LOGIC;
+        DDR_ras_n : INOUT STD_LOGIC;
+        DDR_we_n : INOUT STD_LOGIC;
+        DDR_ba : INOUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+        DDR_addr : INOUT STD_LOGIC_VECTOR(14 DOWNTO 0);
+        DDR_dm : INOUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+        DDR_dq : INOUT STD_LOGIC_VECTOR(31 DOWNTO 0);
+        DDR_dqs_n : INOUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+        DDR_dqs_p : INOUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+        FIXED_IO_mio : INOUT STD_LOGIC_VECTOR(53 DOWNTO 0);
+        FIXED_IO_ddr_vrn : INOUT STD_LOGIC;
+        FIXED_IO_ddr_vrp : INOUT STD_LOGIC;
+        FIXED_IO_ps_srstb : INOUT STD_LOGIC;
+        FIXED_IO_ps_clk : INOUT STD_LOGIC;
+        FIXED_IO_ps_porb : INOUT STD_LOGIC;
+        IIC_0_sda_i : IN STD_LOGIC;
+        IIC_0_sda_o : OUT STD_LOGIC;
+        IIC_0_sda_t : OUT STD_LOGIC;
+        IIC_0_scl_i : IN STD_LOGIC;
+        IIC_0_scl_o : OUT STD_LOGIC;
+        IIC_0_scl_t : OUT STD_LOGIC;
+        LEDS_GPIO_tri_o : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+        DIPS_GPIO_tri_i : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+        bclk : OUT STD_LOGIC;
+        clk125 : IN STD_LOGIC;
+        lrck : OUT STD_LOGIC;
+        mclk : OUT STD_LOGIC;
+        sdata : OUT STD_LOGIC;
+        RGB_LED5_GPIO_tri_o : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+        RGB_LED6_GPIO_tri_o : OUT STD_LOGIC_VECTOR(2 DOWNTO 0)
+      );
+    END COMPONENT;
   component IOBUF is
   port (
     I : in STD_LOGIC;
@@ -150,7 +154,9 @@ design_1_i: component design_1
       sdata => sdata,
       clk125=>clk125,
       dips_gpio_tri_i => sw,
-      leds_gpio_tri_o => leds
+      leds_gpio_tri_o => leds,
+      RGB_LED5_GPIO_tri_o => led5,
+      RGB_LED6_GPIO_tri_o => led6
     );
     
 ac_muten <= '1';    
